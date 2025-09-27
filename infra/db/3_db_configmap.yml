@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-configmap
+  namespace: fastfood-db
+data:
+  POSTGRES_DB: fastdb
+

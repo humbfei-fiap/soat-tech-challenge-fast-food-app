@@ -1,0 +1,19 @@
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: meu-cliente-postgres
+      namespace: fastfood-app
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: postgres-client
+      template:
+        metadata:
+          labels:
+            app: postgres-client
+        spec:
+          containers:
+          - name: postgres-client
+            image: bitnami/postgresql # Ou outra imagem de cliente que você prefira
+            command: ["bash", "-c", "while true; do sleep 3600; done"] # Mantém o pod em execução
