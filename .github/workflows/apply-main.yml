@@ -1,0 +1,46 @@
+name: Deploy to Amazon EKS
+
+# Gatilho: acionado em push para a branch 'develop'
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch: # Permite acionamento manual
+
+# Permissões necessárias para autenticação OIDC
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais da AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Configurar kubectl para o cluster EKS
+        run: |
+          aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region ${{ secrets.AWS_REGION }}
+          kubectl get pods -n default # Comando de teste para verificar a conexão
+
+      - name: Atualizar o manifesto com a nova imagem Docker
+        # Esta etapa é CRUCIAL. Ela atualiza seu arquivo de deployment com a tag da imagem correta.
+        # A tag da imagem deve ser previsível. Uma boa prática é usar o SHA do commit.
+        # Exemplo: seu-usuario/seu-repo:${{ github.sha }}
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          sed -i "s|image:.*|image: SEU_REGISTRY/SEU_REPO:${IMAGE_TAG}|g" k8s/deployment.yaml
+          # Adapte o caminho 'k8s/deployment.yaml' para o local correto do seu arquivo.
+          # Adapte 'SEU_REGISTRY/SEU_REPO' para o nome da sua imagem Docker.
+
+      - name: Fazer deploy no EKS com kubectl
+        run: |
+          kubectl apply -f k8s/
+          # Adapte o caminho 'k8s/' para o local onde estão seus manifestos.
