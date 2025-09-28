@@ -1,0 +1,4 @@
+dev:
+  nome_do_cluster: ek-fiap
+hom:
+  nome_do_cluster: eks-fiap-hom

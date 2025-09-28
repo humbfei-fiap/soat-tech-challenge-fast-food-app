@@ -1,0 +1,69 @@
+name: '[Development] Build and Deploy to EKS'
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais da AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Fazer login no Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Fazer o Build com Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Construir, Taguear e Enviar imagem para o ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Ler nome do cluster do arquivo de ambiente
+        id: get_cluster_name
+        run: |
+          CLUSTER_NAME=$(grep -A 1 "dev:" infra/ambiente.yml | tail -n 1 | awk '{print $2}')
+          echo "name=$CLUSTER_NAME" >> $GITHUB_OUTPUT
+
+      - name: Configurar kubectl para o cluster EKS
+        uses: aws-actions/amazon-eks-kubeconfig@v1
+        with:
+          cluster-name: ${{ steps.get_cluster_name.outputs.name }}
+
+      - name: Atualizar manifesto do Kubernetes com a nova imagem
+        run: |
+          sed -i 's|image:.*|image: ${{ steps.build-image.outputs.image }}|g' infra/app/4_app_deployment.yml
+
+      - name: Fazer deploy da aplicação no EKS
+        run: |
+          kubectl apply -f infra/app
