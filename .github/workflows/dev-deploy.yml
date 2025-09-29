@@ -56,9 +56,8 @@ jobs:
           echo "name=$CLUSTER_NAME" >> $GITHUB_OUTPUT
 
       - name: Configurar kubectl para o cluster EKS
-        uses: aws-actions/amazon-eks-kubeconfig@v1
-        with:
-          cluster-name: ${{ steps.get_cluster_name.outputs.name }}
+        run: |
+          aws eks update-kubeconfig --name ${{ steps.get_cluster_name.outputs.name }} --region ${{ secrets.AWS_REGION }}
 
       - name: Atualizar manifesto do Kubernetes com a nova imagem
         run: |
