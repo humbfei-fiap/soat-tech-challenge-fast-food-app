@@ -17,20 +17,24 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
-      - name: 'DEBUG - Mostra a identidade OIDC do GitHub'
+      - name: 'DEBUG - Obter, Decodificar e Imprimir Token OIDC'
         uses: actions/github-script@v6
-        id: get_oidc_token
         with:
           script: |
-            let token = await core.getIDToken()
-            core.setOutput('token', token)
-      - name: 'DEBUG - Decodifica e imprime a identidade'
-        run: |
-                    echo "--- INFORMACOES DO TOKEN OIDC ---"
-                    token_body=$(echo "${{ steps.get_oidc_token.outputs.token }}" | cut -d. -f2)
-                    decoded_token=$(base64 --decode <<< "$token_body" || base64 -d <<< "$token_body")
-                    echo "$decoded_token"
-                    echo "---------------------------------"
+            try {
+              const token = await core.getIDToken();
+              console.log('Token OIDC obtido com sucesso.');
+
+              const tokenPayload = token.split('.')[1];
+              const decodedPayload = Buffer.from(tokenPayload, 'base64').toString('utf-8');
+              
+              console.log('\n--- PAYLOAD DO TOKEN OIDC DECODIFICADO ---');
+              console.log(decodedPayload);
+              console.log('------------------------------------------');
+
+            } catch (error) {
+              core.setFailed(`Falha ao obter ou decodificar o token OIDC: ${error.message}`);
+            }
       - name: Configurar credenciais da AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
