@@ -17,24 +17,6 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
-      - name: 'DEBUG - Obter, Decodificar e Imprimir Token OIDC'
-        uses: actions/github-script@v6
-        with:
-          script: |
-            try {
-              const token = await core.getIDToken();
-              console.log('Token OIDC obtido com sucesso.');
-
-              const tokenPayload = token.split('.')[1];
-              const decodedPayload = Buffer.from(tokenPayload, 'base64').toString('utf-8');
-              
-              console.log('\n--- PAYLOAD DO TOKEN OIDC DECODIFICADO ---');
-              console.log(decodedPayload);
-              console.log('------------------------------------------');
-
-            } catch (error) {
-              core.setFailed(`Falha ao obter ou decodificar o token OIDC: ${error.message}`);
-            }
       - name: Configurar credenciais da AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
