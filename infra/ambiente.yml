@@ -1,5 +1,5 @@
 dev:
-  nome_do_cluster: eks-fiap
+  nome_do_cluster: eks-fiap-dev
 hom:
   nome_do_cluster: eks-fiap-hom
 prod:
