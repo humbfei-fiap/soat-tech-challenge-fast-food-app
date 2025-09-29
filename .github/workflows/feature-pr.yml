@@ -34,17 +34,15 @@ jobs:
           path: target/*.jar # Caminho para o arquivo que será salvo
 
   # ----------------------------------------------------
-  # JOB 2: Construir e enviar a imagem Docker
+  # JOB 2: Construir a imagem Docker (sem push)
   # ----------------------------------------------------
-  build_and_push_docker:
+  build_docker:
     runs-on: ubuntu-latest
     needs: build_java # Define que este job SÓ RODA DEPOIS que 'build_java' for concluído com sucesso
     permissions:
-      packages: write # Permissão para fazer push no GitHub Container Registry
       contents: read
     steps:
       - name: Checkout do código
-
         uses: actions/checkout@v3
 
       - name: Baixar o artefato Java (.jar)
@@ -53,12 +51,6 @@ jobs:
           name: ${{ needs.build_java.outputs.artifact_name }}
           path: target # Baixa o artefato para a pasta 'target'
 
-      - name: Fazer login no Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Extrair metadados (tags e labels) do Docker
         id: meta
         uses: docker/metadata-action@v5
@@ -66,12 +58,12 @@ jobs:
           images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}
           tags: type=ref,event=branch
 
-      - name: Construir e enviar a imagem Docker
+      - name: Construir a imagem Docker
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
-          push: true
+          push: false # Apenas constrói a imagem, não faz push
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -80,7 +72,7 @@ jobs:
   # ----------------------------------------------------
   create_pull_request:
     runs-on: ubuntu-latest
-    needs: build_and_push_docker # Define que este job SÓ RODA DEPOIS que 'build_and_push_docker' for concluído com sucesso
+    needs: build_docker # Define que este job SÓ RODA DEPOIS que 'build_docker' for concluído com sucesso
     permissions:
       pull-requests: write
       contents: read
@@ -95,7 +87,7 @@ jobs:
           destination_branch: "develop"
           pr_title: "PR de ${{ github.ref_name }}"
           pr_body: |
-            Build da aplicação Java e push da imagem Docker concluídos com sucesso.
+            Build da aplicação Java e da imagem Docker concluídos com sucesso.
             O PR está pronto para revisão.
           pr_label: "automação,docker"
           github_token: ${{ secrets.GITHUB_TOKEN }}
