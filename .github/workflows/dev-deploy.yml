@@ -26,11 +26,11 @@ jobs:
             core.setOutput('token', token)
       - name: 'DEBUG - Decodifica e imprime a identidade'
         run: |
-         11           echo "--- INFORMACOES DO TOKEN OIDC ---"
-         12           token_body=$(echo "${{ steps.get_oidc_token.outputs.token }}" | cut -d. -f2)
-         13           decoded_token=$(base64 --decode <<< "$token_body" || base64 -d <<< "$token_body")
-         14           echo "$decoded_token"
-         15           echo "---------------------------------"
+                    echo "--- INFORMACOES DO TOKEN OIDC ---"
+                    token_body=$(echo "${{ steps.get_oidc_token.outputs.token }}" | cut -d. -f2)
+                    decoded_token=$(base64 --decode <<< "$token_body" || base64 -d <<< "$token_body")
+                    echo "$decoded_token"
+                    echo "---------------------------------"
       - name: Configurar credenciais da AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
