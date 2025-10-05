@@ -1,6 +1,5 @@
 dev:
-  nome_do_cluster: eks-fiap-dev
-hom:
-  nome_do_cluster: eks-fiap-hom
+  nome_do_cluster: soat-eks-cluster
+
 prod:
-  nome_do_cluster: eks-fiap-prod
+  nome_do_cluster: soat-eks-cluster
