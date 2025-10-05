@@ -65,4 +65,4 @@ jobs:
 
       - name: Fazer deploy da aplicação no EKS
         run: |
-          kubectl apply -f infra/app
+          kubectl apply --validate=false -f infra/app
