@@ -62,7 +62,10 @@ jobs:
       - name: Atualizar manifesto do Kubernetes com a nova imagem
         run: |
           sed -i 's|image:.*|image: ${{ steps.build-image.outputs.image }}|g' infra/app/4_app_deployment.yml
-
+      - name: verifica credenciais kubectl
+        run: |
+          aws sts get-caller-identity
+          
       - name: Fazer deploy da aplicação no EKS
         run: |
           kubectl apply --validate=false -f infra/app
