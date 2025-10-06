@@ -17,7 +17,6 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .servers(List.of(new Server().url("")))
                 .info(new Info()
                         .title("Fast Food API")
                         .description("API for fast food orders")
