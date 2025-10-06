@@ -24,6 +24,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+
       - name: Fazer login no Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
@@ -48,7 +49,27 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-            
+  Deploy-to-EKS:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar credenciais da AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          #role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME_ARN }}
+          role-to-assume: arn:aws:iam::239409137076:role/role-eks-apply
+          aws-region: ${{ secrets.AWS_REGION }}
+          audience: sts.amazonaws.com
+
+      - name: Configurar kubectl
+        uses: aws-actions/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+        
       - name: Ler nome do cluster do arquivo de ambiente
         id: get_cluster_name
         run: |
@@ -59,13 +80,18 @@ jobs:
         run: |
           aws eks update-kubeconfig --name ${{ steps.get_cluster_name.outputs.name }} --region ${{ secrets.AWS_REGION }}
 
+
       - name: Atualizar manifesto do Kubernetes com a nova imagem
         run: |
           sed -i 's|image:.*|image: ${{ steps.build-image.outputs.image }}|g' infra/app/4_app_deployment.yml
       - name: verifica credenciais kubectl
         run: |
           aws sts get-caller-identity
-          
+
+
       - name: Fazer deploy da aplicação no EKS
         run: |
+
           kubectl apply --validate=false -f infra/app
+          kubectl rollout status deployment/fastfood-api-deployment -n fastfood-app --timeout=180s
+          kubectl get all -n fastfood-app
