@@ -68,4 +68,9 @@ jobs:
           
       - name: Fazer deploy da aplicação no EKS
         run: |
+          echo "--- kubectl config view ---"
+          kubectl config view
+          echo "--- kubectl auth can-i --list ---"
+          kubectl auth can-i --list
+          echo "--- kubectl apply ---"
           kubectl apply --validate=false -f infra/app
