@@ -91,7 +91,6 @@ jobs:
 
       - name: Fazer deploy da aplicação no EKS
         run: |
-
           kubectl apply --validate=false -f infra/app
           kubectl rollout status deployment/fastfood-api-deployment -n fastfood-app --timeout=180s
           kubectl get all -n fastfood-app
