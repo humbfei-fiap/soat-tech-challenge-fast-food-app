@@ -5,7 +5,7 @@ API para gerenciamento de pedidos de fast food, desenvolvida como parte do Tech 
 ## Vídeo de Apresentação TechChallenge Fase 3 
 
 ![Vídeo de Apresentação](https://www.youtube.com/watch?v=XySUTroo2dk)
-![ArquiteturaCLoud](https://drive.google.com/file/d/1XkkO6LtAgdIEdRIBXZHgui45NchHm7Q_/view?usp=drive_link)
+![ArquiteturaCLoud](https://drive.google.com/file/d/1XkkO6LtAgdIEdRIBXZHgui45NchHm7Q_/view?usp=sharing)
 
 ## Respositorios
 
@@ -112,50 +112,3 @@ POST /payments/{payment_id}/status
 # 5.1 Simular atualização de status de pagamento
 POST /mock/payments
 ```
-
-## Arquitetura Cloud AWS 
-![Arquitetura-AWS](https://www.youtube.com/watch?v=XySUTroo2dk)
-
-
-## Arquitetura de negócio
-
-1. Order
-- Fluxo de Checkout (Criar Pedido)
-Order
-![Checkout](https://drive.google.com/uc?export=view&id=1ZAsgklCNTtMHvifKypVWJNK0ymMNUyeD&filename=imagem.png)
-
-- Fluxo de Busca de Pedidos
-![New Get Orders](https://drive.google.com/uc?export=view&id=11VQyMhUNWZEysEv7EYRwc35LxrDL9PFo&filename=imagem.png)
-
-- Fluxo de Busca de Pedidos por ID
-![Get Order by Id](https://drive.google.com/uc?export=view&id=1AVUn7FVVSxTvVErpMYOPMTCxWK4TFCOa&filename=imagem.png)
-
-- Fluxo de Atualização de Status de Pedido
-![New Update Order Status](https://drive.google.com/uc?export=view&id=1YwpVu4ZQ799VdKtlhcTsnvnXMT2pcdZ0&filename=imagem.png)
-
-2. Customer
-- Fluxo de Criação de Cliente
-![Create Customer](https://drive.google.com/uc?export=view&id=19nWQRlb4ebtrKKRJMqDq_M3-DsPX_NXr&filename=imagem.png)
-
-- Fluxo de Consulta de Cliente por CPF
-![Get Customer By Cpf](https://drive.google.com/uc?export=view&id=10PtT35LG6ur5nFVfKPrtiLmNI8-GmZEN&filename=imagem.png)
-
-3. Product
-- Fluxo de Consulta de Produto por Categoria
-![GetProduct By Category](https://drive.google.com/uc?export=view&id=17xTgt2EN_NEtQc0EKIYYBUukU5fvncul&filename=imagem.png)
-
-- Fluxo de Criação de Produto
-![Create Product](https://drive.google.com/uc?export=view&id=1HCYbOEUTX0zsV7IGiEHdt_B_aQymnfzK&filename=imagem.png)
-
-- Fluxo de Atualização de Produto
-![Update Product](https://drive.google.com/uc?export=view&id=1FM-kZDMAkWiPJJXAi2mpIm2nb5pi-L2Y&filename=imagem.png)
-
-4. Payment
-- Fluxo de Consulta de Status de Pagamento
-![Get payment Status](https://drive.google.com/uc?export=view&id=15cMtUxSZovchB5_MfogsawedBxB2Qwj8&filename=imagem.png)
-
-- Fluxo de Criação de Pagamento
-![New Create Payment](https://drive.google.com/uc?export=view&id=1XEut1e-fDMsPKG198Wh0k3SgpHaByY-L&filename=imagem.png)
-
-- Recebe notificação e Atualiza Status de Pagamento e da Ordem
-![New Update Status](https://drive.google.com/uc?export=view&id=15USTvFBMc8RK9K7a2pyOigPc-jUCHfkB&filename=imagem.png)
