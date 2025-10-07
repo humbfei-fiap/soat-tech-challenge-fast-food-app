@@ -1,4 +1,4 @@
-name: '[Development] Build and Deploy to EKS'
+name: '[PRD] Build and Deploy to EKS'
 
 on:
   push:
