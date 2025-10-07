@@ -21,8 +21,8 @@ public class CorsConfig {
 
             @Override
             public void addViewControllers(org.springframework.web.servlet.config.annotation.ViewControllerRegistry registry) {
-                registry.addRedirectViewController("/swagger-ui/", "/swagger-ui/index.html");
-                registry.addRedirectViewController("/swagger-ui", "/swagger-ui/index.html");
+                registry.addViewController("/swagger-ui/").setViewName("forward:/swagger-ui/index.html");
+                registry.addViewController("/swagger-ui").setViewName("forward:/swagger-ui/index.html");
             }
         };
     }
