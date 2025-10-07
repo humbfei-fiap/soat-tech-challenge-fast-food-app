@@ -18,12 +18,6 @@ public class CorsConfig {
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
             }
-
-            @Override
-            public void addViewControllers(org.springframework.web.servlet.config.annotation.ViewControllerRegistry registry) {
-                registry.addViewController("/swagger-ui/").setViewName("forward:/swagger-ui/index.html");
-                registry.addViewController("/swagger-ui").setViewName("forward:/swagger-ui/index.html");
-            }
         };
     }
 }
