@@ -16,7 +16,7 @@ spec:
       serviceAccountName: fastfood-api-sa # IMPORTANTE: Service Account para autenticação com AWS
       containers:
         - name: fastfood-api
-          image: 239409137076.dkr.ecr.us-east-1.amazonaws.com/develop:abc2c63871473dc613e5aa0af78a4cf64577f226
+          image: 239409137076.dkr.ecr.us-east-1.amazonaws.com/develop:TAG
           #image: hmouraf/fastfood:tech_fase2
           #image: hmouraf/soat-tech-challenge-fast-food-app:feature-build
           ports:
