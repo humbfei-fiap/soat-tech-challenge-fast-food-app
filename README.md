@@ -5,6 +5,7 @@ API para gerenciamento de pedidos de fast food, desenvolvida como parte do Tech 
 ## Vídeo de Apresentação TechChallenge Fase 3 
 
 ![Vídeo de Apresentação](https://www.youtube.com/watch?v=XySUTroo2dk)
+![ArquiteturaCLoud](https://drive.google.com/file/d/1XkkO6LtAgdIEdRIBXZHgui45NchHm7Q_/view?usp=drive_link)
 
 ## Respositorios
 
