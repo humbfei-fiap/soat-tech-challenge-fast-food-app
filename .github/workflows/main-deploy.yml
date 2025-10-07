@@ -3,7 +3,7 @@ name: '[Development] Build and Deploy to EKS'
 on:
   push:
     branches:
-      - develop
+      - main
   workflow_dispatch:
 
 permissions:
@@ -99,10 +99,15 @@ jobs:
 
 
       - name: Atualizar manifesto do Kubernetes com a nova imagem
+        env:
+          NEW_IMAGE: ${{ needs.build.outputs.image }}
+          echo "id imagem: $NEW_IMAGE"
         run: |
-          sed -i 's|image:.*|image: ${{ needs.build.outputs.image }}|g' infra/app/4_app_deployment.yml
-          sed -i 's|image:.*|image: '${{ needs.build.outputs.image }}'|g' infra/app/4_app_deployment.yml
+          sed -i "s#image:.*#image: $NEW_IMAGE#g" infra/app/4_app_deployment.yml
 
+      - name: Verificar valor da variavel imagem 
+        run: |
+          echo ${{ needs.build.outputs.image }}
       - name: Verificar manifesto do Kubernetes
         run: |
           cat infra/app/4_app_deployment.yml
