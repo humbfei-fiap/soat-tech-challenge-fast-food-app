@@ -9,11 +9,11 @@ API para gerenciamento de pedidos de fast food, desenvolvida como parte do Tech 
 
 ## Respositorios
 
-![api->](https://github.com/humbfei-fiap/soat-tech-challenge-fast-food-app)
-![gtw+ambda ->](https://github.com/humbfei-fiap/soat-tech-challenge-infra-gtw-lambda)
-![eks ->](https://github.com/humbfei-fiap/soat-tech-challenge-infra-eks)
-![banco ->](https://github.com/humbfei-fiap/soat-tech-challenge-infra-postgres)
-![roles->](https://github.com/humbfei-fiap/soat-tech-challenge-infra-roles)
+Api         = https://github.com/humbfei-fiap/soat-tech-challenge-fast-food-app
+Gtw+Lambda  = https://github.com/humbfei-fiap/soat-tech-challenge-infra-gtw-lambda
+EKS         = https://github.com/humbfei-fiap/soat-tech-challenge-infra-eks
+Postgres    = https://github.com/humbfei-fiap/soat-tech-challenge-infra-postgres
+Roles       = https://github.com/humbfei-fiap/soat-tech-challenge-infra-roles
 
 
 ## Tecnologias Utilizadas
