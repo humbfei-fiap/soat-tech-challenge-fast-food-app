@@ -6,39 +6,9 @@ on:
       - 'develop'
     
 jobs:
-  # ----------------------------------------------------
-  # JOB 1: Compilar a aplicação Java
-  # ----------------------------------------------------
-  build_java:
-    runs-on: ubuntu-latest
-    outputs:
-      artifact_name: java-artifact
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
-
-      - name: Configurar JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      - name: Fazer o Build com Maven
-        run: mvn -B package --file pom.xml
-
-      - name: Fazer upload do artefato Java (.jar)
-        uses: actions/upload-artifact@v4
-        with:
-          name: java-artifact # Nome do artefato
-          path: target/*.jar # Caminho para o arquivo que será salvo
-
-  # ----------------------------------------------------
-  # JOB 2: Criar o Pull Request
-  # ----------------------------------------------------
   create_pull_request:
     runs-on: ubuntu-latest
-    needs: build_java # Define que este job SÓ RODA DEPOIS que 'build_docker' for concluído com sucesso
+ 
     permissions:
       pull-requests: write
       contents: read
@@ -50,8 +20,8 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           source_branch: ${{ github.ref_name }}
-          destination_branch: "develop"
-          pr_title: "PR de ${{ github.ref_name }}"
+          destination_branch: "main"
+          pr_title: "PR aberto automaticamente: ${{ github.ref_name }} -> to main"
           pr_body: |
             Build da aplicação Java e da imagem Docker concluídos com sucesso.
             O PR está pronto para revisão.
