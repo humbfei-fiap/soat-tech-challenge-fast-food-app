@@ -26,6 +26,27 @@ API para gerenciamento de pedidos de fast food, desenvolvida como parte do Tech 
 - Maven
 - Swagger/OpenAPI
 
+## Estrutura de Deploy na AWS EKS
+```
+infra/app/
+├── 0_app_serviceaccount.yml # Define a conta de serviço para o pod da aplicação (usado para permissões IAM).
+|
+├── 1_app_namespace.yml      # Cria o namespace 'fastfood-app' para isolar os recursos.
+|
+├── 2_app_secret.yml         # Define parametros para buuscar o Secret na AWS Secrets Manager * Dados sensíveis* (Ex:credenciais de banco de dados).
+|
+├── 3_app_configmap.yml      # Armazena configurações não-sensíveis da aplicação como variáveis de ambiente.
+|
+├── 4_app_deployment.yml     # Descreve como a aplicação deve ser executada (imagem, réplicas, probes, etc.).
+|
+├── 5_app_service.yml        # Expõe a aplicação internamente no cluster com um nome DNS estável.
+|
+├── 6_app_hpa.yml            # Configura o Horizontal Pod Autoscaler para escalar a aplicação sob demanda.
+|
+└── ingress.yaml             # Define o ingresso para o NLB compartilhado para o NGINX Ingress Controller.
+
+```
+
 ## Estrutura do Projeto
 
 ```
