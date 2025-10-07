@@ -1,4 +1,4 @@
-name: CI de Feature com Jobs Separados
+name: PR de Feature para Develop
 
 on:
   push:
