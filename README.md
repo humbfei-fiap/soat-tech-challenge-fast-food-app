@@ -6,6 +6,7 @@ API para gerenciamento de pedidos de fast food, desenvolvida como parte do Tech 
 
 - [Vídeo de Apresentação](https://www.youtube.com/watch?v=XySUTroo2dk)
 - [ArquiteturaCloud](https://drive.google.com/file/d/1XkkO6LtAgdIEdRIBXZHgui45NchHm7Q_/view?usp=sharing)
+![arquitetura_aws_TC3 drawio](https://github.com/user-attachments/assets/7ab80917-3fc9-4173-95d5-6d11b4fc759d)
 
 ## Respositorios
 
