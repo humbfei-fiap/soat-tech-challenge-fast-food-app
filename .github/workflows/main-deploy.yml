@@ -90,7 +90,7 @@ jobs:
       - name: Ler nome do cluster do arquivo de ambiente
         id: get_cluster_name
         run: |
-          CLUSTER_NAME=$(grep -A 1 "dev:" infra/ambiente.yml | tail -n 1 | awk '{print $2}')
+          CLUSTER_NAME=$(grep -A 1 "prod:" infra/ambiente.yml | tail -n 1 | awk '{print $2}')
           echo "name=$CLUSTER_NAME" >> $GITHUB_OUTPUT
 
       - name: Configurar kubectl para o cluster EKS
@@ -102,26 +102,16 @@ jobs:
         env:
           NEW_TAG: ${{ needs.build.outputs.tag }}
         run: |
-          echo ${{ needs.build.outputs.tag }}
-          echo "Nova tag: $NEW_TAG"
-          
+         
           sed -i "s/TAG/$NEW_TAG/g" infra/app/4_app_deployment.yml
 
       - name: Verificar valor da variavel imagem 
         run: |
           echo ${{ needs.build.outputs.tag }}
-      - name: Verificar manifesto do Kubernetes
-        run: |
-          cat infra/app/4_app_deployment.yml
-
-      - name: verifica credenciais kubectl
-        run: |
-          aws sts get-caller-identity
-
 
       - name: Fazer deploy da aplicação no EKS
         run: |
           kubectl apply -f infra/app/1_app_namespace.yml
           kubectl apply --validate=false -f infra/app
           kubectl rollout status deployment/fastfood-api-deployment -n fastfood-app --timeout=180s
-          kubectl get all -n fastfood-app
+          echo "Deploy realizado com sucesso!"
