@@ -26,7 +26,7 @@ API para gerenciamento de pedidos de fast food, desenvolvida como parte do Tech 
 - Maven
 - Swagger/OpenAPI
 
-## Estrutura dos arquivos de deploy
+## Estrutura de Deploy na AWS EKS
 ```
 infra/app/
 ├── 0_app_serviceaccount.yml # Define a conta de serviço para o pod da aplicação (usado para permissões IAM).
